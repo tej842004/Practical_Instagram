@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
   View,
@@ -43,27 +43,25 @@ const UserData = ({ user }) => {
     <>
       <Header user={user} />
       <View style={styles.container}>
-        <FlatList
-          data={mediaData}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderMedia}
-        />
+        <View style={styles.mediaContainer}>
+          <FlatList
+            data={mediaData}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(index) => index.toString()}
+            renderItem={renderMedia}
+          />
+        </View>
         <View style={styles.iconsContainer}>
           <View style={styles.icons}>
-            <MaterialCommunityIcons
-              name="heart"
-              size={25}
-              color={configColors.danger}
-            />
+            <Ionicons name="heart" size={25} color={configColors.danger} />
             <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <MaterialCommunityIcons name="comment-outline" size={25} />
+              <Ionicons name="chatbubble-outline" size={25} />
             </TouchableOpacity>
-            <MaterialCommunityIcons name="share-variant" size={25} />
+            <Ionicons name="paper-plane-outline" size={25} />
           </View>
-          <MaterialCommunityIcons
+          <Ionicons
             style={{ marginRight: 15 }}
             name="bookmark-outline"
             size={25}
@@ -155,6 +153,9 @@ const styles = StyleSheet.create({
   },
   caption: {
     width: 300,
+  },
+  mediaContainer: {
+    marginBottom: 15,
   },
 });
 

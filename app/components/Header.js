@@ -1,7 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
-import Screen from "./Screen";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../constants/theme";
 
 const Header = ({ user }) => {
@@ -15,7 +14,7 @@ const Header = ({ user }) => {
         />
         <Text>{user?.user.name}</Text>
       </View>
-      <MaterialCommunityIcons name="dots-horizontal" size={25} />
+      <Ionicons name="ellipsis-horizontal" size={25} />
     </View>
   );
 };
