@@ -16,14 +16,30 @@ import configColors from "../config/colors";
 import Header from "./Header";
 import Comments from "./Comments";
 import ListItemSeparator from "./ListItemSeparator";
+import { useVideoPlayer, VideoView } from "expo-video";
 
 const { width } = Dimensions.get("window");
 
 const UserData = ({ user }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const mediaData = [...(user?.images || []), ...(user?.videos || [])];
+
+  const videoPlayers = mediaData
+    .filter((item) => item.endsWith(".mp4"))
+    .reduce((acc, videoUri) => {
+      acc[videoUri] = useVideoPlayer(videoUri, (player) => {
+        player.loop = true;
+        player.play();
+      });
+      return acc;
+    }, {});
 
   const renderMedia = ({ item }) => {
-    return <Image source={{ uri: item }} style={styles.media} />;
+    if (item.endsWith(".mp4")) {
+      return <VideoView player={videoPlayers[item]} style={styles.media} />;
+    } else {
+      return <Image source={{ uri: item }} style={styles.media} />;
+    }
   };
 
   return (
@@ -31,11 +47,11 @@ const UserData = ({ user }) => {
       <Header user={user} />
       <View style={styles.container}>
         <FlatList
-          data={user?.images}
+          data={mediaData}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(index) => index.toString()}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={renderMedia}
         />
         <View style={styles.iconsContainer}>
@@ -58,35 +74,37 @@ const UserData = ({ user }) => {
         </View>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.likes}>{user?.likes} Likes</Text>
+          <Text style={styles.likes}>{user?.likes || 0} Likes</Text>
           <View style={styles.description}>
-            <Text style={styles.username}>{user?.user.name}</Text>
+            <Text style={styles.username}>{user?.user?.name || "Unknown"}</Text>
             <Text style={styles.caption}>
-              {user?.descriptions} {user?.hashtags}
+              {user?.descriptions || ""} {user?.hashtags || ""}
             </Text>
           </View>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.comment}>
-              View all {user?.comments.length} comments
+              View all {user?.comments?.length || 0} comments
             </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.commentContainer}>
-          <Image
-            resizeMode="contain"
-            source={{ uri: user?.user.profile }}
-            style={styles.icon}
-          />
+          {user?.user?.profile && (
+            <Image
+              resizeMode="contain"
+              source={{ uri: user?.user?.profile }}
+              style={styles.icon}
+            />
+          )}
           <TextInput placeholder="Add a comment" />
         </View>
       </View>
 
-      <Modal visible={modalVisible}>
+      <Modal visible={modalVisible} animationType="slide">
         <Button title="Close" onPress={() => setModalVisible(false)} />
         <FlatList
-          data={user?.comments}
-          keyExtractor={(item) => item.toString()}
+          data={user?.comments || []}
+          keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => <Comments comment={item} />}
           ItemSeparatorComponent={ListItemSeparator}
         />
@@ -94,56 +112,6 @@ const UserData = ({ user }) => {
     </>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {},
-//   image: {
-//     height: 350,
-//     width: "100%",
-//     marginBottom: 10,
-//   },
-//   icons: {
-//     flex: 1,
-//     flexDirection: "row",
-//     gap: 10,
-//     marginLeft: 15,
-//   },
-//   iconsContainer: {
-//     flexDirection: "row",
-//   },
-//   description: {
-//     flexDirection: "row",
-//   },
-//   username: {
-//     fontWeight: "bold",
-//     marginRight: 10,
-//     marginLeft: 15,
-//   },
-//   likes: {
-//     marginLeft: 15,
-//   },
-//   comment: {
-//     marginLeft: 15,
-//   },
-//   icon: {
-//     width: 50,
-//     height: 50,
-//     borderRadius: 25,
-//     marginRight: 10,
-//   },
-//   commentContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     marginLeft: 15,
-//     marginBottom: 15,
-//   },
-//   detailsContainer: {
-//     marginVertical: 15,
-//   },
-//   caption: {
-//     width: 300,
-//   },
-// });
 
 const styles = StyleSheet.create({
   media: {
