@@ -17,6 +17,8 @@ const AuthNavigator = () => {
     }).then(() => setFontLoaded(true));
   }, []);
 
+  if (!fontLoaded) return null;
+
   return (
     <Tab.Navigator
       screenOptions={{

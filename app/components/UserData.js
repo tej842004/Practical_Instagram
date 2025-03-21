@@ -70,12 +70,12 @@ const UserData = ({ user }) => {
 
         <View style={styles.detailsContainer}>
           <Text style={styles.likes}>{user?.likes || 0} Likes</Text>
-          <View style={styles.description}>
-            <Text style={styles.username}>{user?.user?.name || "Unknown"}</Text>
-            <Text style={styles.caption}>
-              {user?.descriptions || ""} {user?.hashtags || ""}
-            </Text>
-          </View>
+          <Text style={styles.description}>
+            <Text style={{ fontWeight: "bold" }}>
+              {user?.user?.name || "Unknown"}
+            </Text>{" "}
+            {user?.descriptions || ""} {user?.hashtags || ""}
+          </Text>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.comment}>
               View all {user?.comments?.length || 0} comments
@@ -123,10 +123,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   description: {
-    flexDirection: "row",
-  },
-  username: {
-    fontWeight: "bold",
     marginRight: 10,
     marginLeft: 15,
   },
