@@ -27,10 +27,7 @@ const UserData = ({ user }) => {
   const videoPlayers = mediaData
     .filter((item) => item.endsWith(".mp4"))
     .reduce((acc, videoUri) => {
-      acc[videoUri] = useVideoPlayer(videoUri, (player) => {
-        player.loop = true;
-        player.play();
-      });
+      acc[videoUri] = useVideoPlayer(videoUri);
       return acc;
     }, {});
 
