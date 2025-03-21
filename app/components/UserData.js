@@ -55,7 +55,7 @@ const UserData = ({ user }) => {
         </View>
         <View style={styles.iconsContainer}>
           <View style={styles.icons}>
-            <Ionicons name="heart" size={25} color={configColors.danger} />
+            <Ionicons name="heart" size={25} color={configColors.primary} />
             <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Ionicons name="chatbubble-outline" size={25} />
             </TouchableOpacity>

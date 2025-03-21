@@ -5,6 +5,10 @@ import * as Font from "expo-font";
 
 import HomeScreen from "../screens/HomeScreen";
 import { StyleSheet } from "react-native";
+import SearchScreen from "../screens/SearchScreen";
+import NotificationScreen from "../screens/NotificationsScreen";
+import CreateScreen from "../screens/CreateScreen";
+import AccountScreen from "../screens/AccountScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +65,7 @@ const AuthNavigator = () => {
       />
       <Tab.Screen
         name="Search"
-        component={HomeScreen}
+        component={SearchScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -71,7 +75,7 @@ const AuthNavigator = () => {
       />
       <Tab.Screen
         name="Create"
-        component={HomeScreen}
+        component={CreateScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -81,7 +85,7 @@ const AuthNavigator = () => {
       />
       <Tab.Screen
         name="Notification"
-        component={HomeScreen}
+        component={NotificationScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -91,7 +95,7 @@ const AuthNavigator = () => {
       />
       <Tab.Screen
         name="Account"
-        component={HomeScreen}
+        component={AccountScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
