@@ -80,7 +80,10 @@ const UserData = ({ user }) => {
             <Text style={{ fontWeight: "bold" }}>
               {user?.user?.name || "Unknown"}
             </Text>{" "}
-            {user?.descriptions || ""} {user?.hashtags || ""}
+            {user?.descriptions || ""}{" "}
+            <Text style={{ color: "rgba(217, 26, 70, 1)" }}>
+              {user?.hashtags || ""}
+            </Text>
           </Text>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.comment}>
