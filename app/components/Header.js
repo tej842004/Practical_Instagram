@@ -20,8 +20,8 @@ const Header = ({ user }) => {
           }}
         >
           <Image
-            resizeMode="cover"
-            source={require("../assets/mark.jpg")}
+            resizeMode="contain"
+            source={{ uri: user?.user.profile }}
             style={styles.headerIcon}
           />
         </View>
