@@ -17,6 +17,7 @@ import Header from "./Header";
 import Comments from "./Comments";
 import ListItemSeparator from "./ListItemSeparator";
 import { useVideoPlayer, VideoView } from "expo-video";
+import numeral from "numeral";
 
 const { width } = Dimensions.get("window");
 
@@ -69,7 +70,12 @@ const UserData = ({ user }) => {
         </View>
 
         <View style={styles.detailsContainer}>
-          <Text style={styles.likes}>{user?.likes || 0} Likes</Text>
+          <Text style={styles.likes}>
+            {numeral(user?.likes || 0)
+              .format("0.[0]a")
+              .toUpperCase()}{" "}
+            Likes
+          </Text>
           <Text style={styles.description}>
             <Text style={{ fontWeight: "bold" }}>
               {user?.user?.name || "Unknown"}
@@ -91,7 +97,7 @@ const UserData = ({ user }) => {
               style={styles.icon}
             />
           )}
-          <TextInput placeholder="Add a comment" />
+          <TextInput placeholder="Add a comment..." />
         </View>
       </View>
 
@@ -99,7 +105,7 @@ const UserData = ({ user }) => {
         <Button title="Close" onPress={() => setModalVisible(false)} />
         <FlatList
           data={user?.comments || []}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(index) => index.toString()}
           renderItem={({ item }) => <Comments comment={item} />}
           ItemSeparatorComponent={ListItemSeparator}
         />
