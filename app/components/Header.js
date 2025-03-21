@@ -7,11 +7,24 @@ const Header = ({ user }) => {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerUserInfo}>
-        <Image
-          resizeMode="contain"
-          source={{ uri: user?.user.profile }}
-          style={styles.headerIcon}
-        />
+        <View
+          style={{
+            height: 60,
+            width: 60,
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth: 2,
+            borderColor: "rgba(255, 35, 122, 1)",
+            borderRadius: 30,
+            marginRight: 10,
+          }}
+        >
+          <Image
+            resizeMode="cover"
+            source={require("../assets/mark.jpg")}
+            style={styles.headerIcon}
+          />
+        </View>
         <Text>{user?.user.name}</Text>
       </View>
       <Ionicons name="ellipsis-horizontal" size={25} />
@@ -30,7 +43,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 10,
     borderColor: colors.background,
   },
   headerUserInfo: {
