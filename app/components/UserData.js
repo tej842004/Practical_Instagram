@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -11,6 +11,8 @@ import {
   FlatList,
   TextInput,
   Dimensions,
+  BackHandler,
+  Share,
 } from "react-native";
 import configColors from "../config/colors";
 import Header from "./Header";
@@ -18,10 +20,13 @@ import Comments from "./Comments";
 import ListItemSeparator from "./ListItemSeparator";
 import { useVideoPlayer, VideoView } from "expo-video";
 import numeral from "numeral";
+import colors from "../config/colors";
 
 const { width } = Dimensions.get("window");
 
 const UserData = ({ user }) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const mediaData = [...(user?.images || []), ...(user?.videos || [])];
 
@@ -37,6 +42,43 @@ const UserData = ({ user }) => {
       return <VideoView player={videoPlayers[item]} style={styles.media} />;
     } else {
       return <Image source={{ uri: item }} style={styles.media} />;
+    }
+  };
+
+  useEffect(() => {
+    const backAction = () => {
+      if (modalVisible) {
+        setModalVisible(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [modalVisible]);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Check out this awesome content!",
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          Alert.alert("Shared via", result.activityType);
+        } else {
+          Alert.alert("Content Shared");
+        }
+      } else if (result.action === Share.dismissedAction) {
+        Alert.alert("Share Cancelled");
+      }
+    } catch (error) {
+      Alert.alert("Error", error.message);
     }
   };
 
@@ -56,17 +98,38 @@ const UserData = ({ user }) => {
         </View>
         <View style={styles.iconsContainer}>
           <View style={styles.icons}>
-            <Ionicons name="heart" size={25} color={configColors.primary} />
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-              <Ionicons name="chatbubble-outline" size={25} />
+            <TouchableOpacity onPress={() => setIsLiked(!isLiked)}>
+              <Ionicons
+                name={isLiked ? "heart" : "heart-outline"}
+                size={25}
+                color={isLiked ? configColors.primary : configColors.dark}
+              />
             </TouchableOpacity>
-            <Ionicons name="paper-plane-outline" size={25} />
+
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Ionicons
+                name="chatbubble-outline"
+                size={25}
+                color={configColors.dark}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => onShare()}>
+              <Ionicons
+                name="paper-plane-outline"
+                size={25}
+                color={configColors.dark}
+              />
+            </TouchableOpacity>
           </View>
-          <Ionicons
-            style={{ marginRight: 15 }}
-            name="bookmark-outline"
-            size={25}
-          />
+          <TouchableOpacity onPress={() => setIsBookmarked(!isBookmarked)}>
+            <Ionicons
+              style={{ marginRight: 15 }}
+              name={isBookmarked ? "bookmark" : "bookmark-outline"}
+              size={25}
+              color={isBookmarked && configColors.medium}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.detailsContainer}>
@@ -104,8 +167,17 @@ const UserData = ({ user }) => {
         </View>
       </View>
 
-      <Modal visible={modalVisible} animationType="slide">
-        <Button title="Close" onPress={() => setModalVisible(false)} />
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={false}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <Button
+          title="Close"
+          onPress={() => setModalVisible(false)}
+          color={colors.primary}
+        />
         <FlatList
           data={user?.comments || []}
           keyExtractor={(index) => index.toString()}
