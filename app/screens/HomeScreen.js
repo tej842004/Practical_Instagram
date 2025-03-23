@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import React from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import UserData from "../components/UserData";
-import axios from "axios";
 import ListItemSeparator from "../components/ListItemSeparator";
+import useData from "../hooks/useData";
+import colors from "../config/colors";
 
 const HomeScreen = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("https://unikwork.com/instagram/api/get_data.php")
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.log("Error fetching the data", err));
-  }, []);
+  const { data: users, error, isLoading } = useData();
 
   return (
-    <View>
-      <FlatList
-        data={users}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <UserData user={item} />}
-        ItemSeparatorComponent={ListItemSeparator}
-      />
+    <View style={styles.container}>
+      {error && <Text>{error}</Text>}
+
+      {isLoading ? (
+        <ActivityIndicator size="large" color={colors.primary} />
+      ) : (
+        <FlatList
+          data={users}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <UserData user={item} />}
+          ItemSeparatorComponent={ListItemSeparator}
+        />
+      )}
     </View>
   );
 };
