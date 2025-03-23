@@ -27,7 +27,7 @@ const Header = ({ user }) => {
         </View>
         <Text>{user?.user.name}</Text>
       </View>
-      <Ionicons name="ellipsis-horizontal" size={25} />
+      <Ionicons name="ellipsis-vertical" size={25} />
     </View>
   );
 };

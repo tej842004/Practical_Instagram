@@ -37,11 +37,56 @@ const UserData = ({ user }) => {
       return acc;
     }, {});
 
-  const renderMedia = ({ item }) => {
+  const renderMedia = ({ item, index }) => {
     if (item.endsWith(".mp4")) {
-      return <VideoView player={videoPlayers[item]} style={styles.media} />;
+      return (
+        <>
+          <View
+            style={{
+              height: 30,
+              width: 50,
+              borderRadius: 12,
+              backgroundColor: colors.black,
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              top: 10,
+              right: 20,
+              zIndex: 1,
+            }}
+          >
+            <Text style={{ color: colors.white }}>
+              {index + 1}/{mediaData.length}
+            </Text>
+          </View>
+          <VideoView player={videoPlayers[item]} style={styles.media} />
+        </>
+      );
     } else {
-      return <Image source={{ uri: item }} style={styles.media} />;
+      return (
+        <>
+          <View
+            style={{
+              height: 30,
+              width: 45,
+              borderRadius: 12,
+              backgroundColor: colors.black,
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              top: 10,
+              right: 20,
+              zIndex: 1,
+            }}
+          >
+            <Text style={{ color: colors.white }}>
+              {index + 1}/{mediaData.length}
+            </Text>
+          </View>
+
+          <Image source={{ uri: item }} style={styles.media} />
+        </>
+      );
     }
   };
 
@@ -127,7 +172,7 @@ const UserData = ({ user }) => {
               style={{ marginRight: 15 }}
               name={isBookmarked ? "bookmark" : "bookmark-outline"}
               size={25}
-              color={isBookmarked && configColors.medium}
+              color={isBookmarked && configColors.dark}
             />
           </TouchableOpacity>
         </View>

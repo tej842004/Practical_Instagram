@@ -9,6 +9,7 @@ import SearchScreen from "../screens/SearchScreen";
 import NotificationScreen from "../screens/NotificationsScreen";
 import CreateScreen from "../screens/CreateScreen";
 import AccountScreen from "../screens/AccountScreen";
+import colors from "../config/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,7 @@ const AuthNavigator = () => {
           headerTitleStyle: {
             fontSize: 22,
             fontFamily: "Billabong",
+            color: colors.dark,
           },
           headerLeft: () => (
             <Ionicons
