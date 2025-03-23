@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/apiClient";
+import { CanceledError } from "axios";
 
 const useData = () => {
-  const [data, useData] = useState([]);
+  const [data, setData] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
 
@@ -13,10 +14,11 @@ const useData = () => {
     apiClient
       .get("/get_data.php", { signal: controller.signal })
       .then((res) => {
-        useData(res.data);
+        setData(res.data);
         setLoading(false);
       })
-      .then((err) => {
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
         setError(err.message);
         setLoading(false);
       });

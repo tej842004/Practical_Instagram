@@ -16,9 +16,9 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      {error && <Text>{error}</Text>}
-
-      {isLoading ? (
+      {error ? (
+        <Text style={styles.errorText}>{error}</Text>
+      ) : isLoading ? (
         <ActivityIndicator size="large" color={colors.primary} />
       ) : (
         <FlatList
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  errorText: {
+    color: colors.primary,
   },
 });
 
